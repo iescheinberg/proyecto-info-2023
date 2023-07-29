@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+<center>
+    
+    <body>
+       <video controls>
+          <source src="{% static 'img/Presentacion.webm' %}" type="video/webm">
+          Tu navegador no admite el formato de video webm.
+       </video>
+    </body>
+ </center>
+{% endblock %}

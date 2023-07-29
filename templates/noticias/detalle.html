@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+	
+	<div class="container">
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto mb-5">
+      	<div class="row">
+      		<div class="col-md-6">
+      			<img src="{{noticia.imagen.url}}" width="300">
+      		</div>
+      		<div class="col-md-6">
+      		<h4>{{noticia.categoria}}</h4>
+  			<h4>TITULO: {{noticia.titulo}}</h4>
+  			<h4>FECHA: {{noticia.creado}}</h4>
+  			
+  			<h4>AUTOR: {{noticia.autor}}</h4>
+        <p>CONTENIDO <br>{{noticia.contenido}}</p>
+  			<hr> 
+      		</div>
+      	</div>
+        {% if user.is_staff %}
+  			 	<a href="{% url 'noticias:borrar_noticia' noticia.pk %}" class="btn btn-danger">Borrar</a>
+          <a href="{% url 'noticias:modificar_noticia' noticia.pk %}" class="btn btn-success">Modificar</a>
+        {% endif %}
+      </div>
+    </div>
+    <hr>
+    {% if user.is_authenticated or user.is_staff %}
+    <h4>COMENTARIOS</h4>
+    <div class="row" style="margin-bottom: 200px;">
+      <div class="col-md-12">
+          {% if user.is_staff or user.is_authenticated %}
+            <form method="POST" action="{% url 'comentarios:agregar_comentarios' noticia.pk %}">
+              {% csrf_token %}
+              <textarea type="text" name="comentario" style="width: 800px;"></textarea>
+              <input type="submit" name="" value="Comentar">
+              
+            </form>
+          {% else %}
+          <p>Solo el personal puede agregar comentarios.</p>
+          <p>Debes <a href="{% url 'login' %}">Iniciar sesión</a> para agregar comentarios.</p>
+          
+          {% endif %}
+      </div>
+      <hr>
+      <div>
+          {% for c in noticia.MisComentarios %}
+              <div>
+                <h4>{{c.creado}}</h4>
+                <h4>{{c.usuario}}</h4>
+                <h4>{{c.texto}}</h4>
+                {% if user.is_staff or user == c.usuario %}
+              
+                  <a href="{% url 'comentarios:borrar_comentario' c.pk %}" class="btn btn-danger">Borrar</a>
+                  <a href="{% url 'comentarios:modificar_comentario' c.pk %}" class="btn btn-success">Modificar</a>
+                {% endif %}
+              </div><hr>
+          {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+{% endblock contenido %}

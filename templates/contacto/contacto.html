@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<center>
+    {% if user.is_authenticated %}
+    <form method="POST" style="margin: 200;">
+        <h1>Formulario de contacto</h1>
+        <br>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}"> {{message}} </div>
+            {% endfor %}
+        {% endif %}
+        <table>
+            {% csrf_token %}
+            {{ form }}
+        </table>
+        <input type="submit" value="Contactar">
+    </form>
+    {% else %}
+        <p>Solo los usuarios registrados pueden contactar.</p>
+        <p>Debes <a href="{% url 'login' %}">Iniciar sesión</a> para contactar.</p>
+        <p>¿No tienes una cuenta? <a href="{% url 'usuarios:registrar' %}">Regístrate</a></p>
+    {% endif %}
+</center>
+{% endblock %}

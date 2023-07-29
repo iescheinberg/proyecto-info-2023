@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<center>
+	<form method="POST">{%csrf_token%}
+		{{form.errors}}
+		<div>
+			<input type="text" name="username" placeholder="USUARIO">
+			<input type="password" name="password" placeholder="PASSWORD">
+		</div>
+		
+
+		<input type="submit" name="" value="Ingresar">
+		<div>
+			<p>¿No tienes una cuenta? <a href="{% url 'usuarios:registrar' %}">Regístrate</a></p>
+		</div>
+	</form>
+</center>
+
+			
+{% endblock %}
